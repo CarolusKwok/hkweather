@@ -28,12 +28,12 @@ HKOlighting = function(range = 64, type = "CC", DDays = 4.5, DTime = Sys.time(),
     return("---Download Failed---")
   }
   #Define additional variables
-  DTime = with_tz(DTime, tz = "HongKong")
+  DTime = lubridate::with_tz(DTime, tz = "HongKong")
   updt = ifelse(range == 64, 6, 12)
   dit = ifelse(range == 256, 6, 0)
   FailN = 0
   Fail = list()
-  #Find the current time and the ending time of the duration
+  #Find the current time and the ending time of the duration, and download!
   Time_Spl = data.frame(Time  = c("Now", "Lighting"),
                         Year  = lubridate::year(DTime),
                         Month = lubridate::month(DTime),
@@ -42,7 +42,10 @@ HKOlighting = function(range = 64, type = "CC", DDays = 4.5, DTime = Sys.time(),
                         Min   = c(lubridate::minute(DTime), lubridate::minute(DTime)-lubridate::minute(DTime)%%updt + dit))
   Lig_URL = data.frame(Num = seq(1:(1440/updt*DDays)))
   Lig_URL$Time = ISOdate(Time_Spl$Year[2], Time_Spl$Month[2], Time_Spl$Day[2], Time_Spl$Hour[2], Time_Spl$Min[2], 0, tz = "") - lubridate::minutes((Lig_URL$Num - 1)*updt)
-  Lig_URL$Date = paste(sprintf("%02d", lubridate::month(Lig_URL$Time)), sprintf("%02d", lubridate::day(Lig_URL$Time)), sep="")
+  Lig_URL$Date = paste(sprintf("%04d", lubridate::year( Lig_URL$Time)),
+                       sprintf("%02d", lubridate::month(Lig_URL$Time)),
+                       sprintf("%02d", lubridate::day(  Lig_URL$Time)),
+                       sep="")
   Lig_URL$URL  = paste("https://www.hko.gov.hk/wxinfo/llis/llisradar/images/lli_", range, type, "_",
                        sprintf("%04d",   lubridate::year(Lig_URL$Time)),
                        sprintf("%02d",  lubridate::month(Lig_URL$Time)),

@@ -11,10 +11,11 @@
 #'
 #' @examples HKOsatellite()
 HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), listfail = F){
+  #Checks the input data
   flag_magn = ifelse((magn == 8 | magn == 4 | magn == 2),F,T)
   flag_type  = ifelse((type == "dc"| type == "tc" | type == "ir"),F,T)
   flag_DDays = !is.numeric(DDays)
-  flag_DTime = !is.POSIXct(DTime)
+  flag_DTime = !lubridate::is.POSIXct(DTime)
   flag_listfail = !(is.numeric(listfail) | is.logical(listfail))
   flag_all   = flag_magn + flag_type + flag_DDays + flag_DTime + flag_listfail
   if(flag_all > 0){
@@ -26,8 +27,11 @@ HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), 
     if(flag_listfail){message("Variable listfail is wrong! (T/F/1/0 only)")}
     return("---Download Failed---")
   }
+  #Define additional variables
+  DTime = lubridate::with_tz(DTime, tz = "HongKong")
   FailN = 0
   Fail = list()
+  #Find the current time and the ending time of the duration, and download!
   Time_Spl = data.frame(Time  = c("Now", "Sat"),
                         Year  = lubridate::year(DTime),
                         Month = lubridate::month(DTime),
@@ -35,9 +39,12 @@ HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), 
                         Hour  = lubridate::hour(DTime),
                         Min   = c(lubridate::minute(DTime), lubridate::minute(DTime)-lubridate::minute(DTime)%%10))
   Sat_URL          = data.frame(Num = seq(1:(144*DDays)))
-  Sat_URL$Time     = ISOdate(Time_Spl$Year[2], Time_Spl$Month[2], Time_Spl$Day[2], Time_Spl$Hour[2], Time_Spl$Min[2], 0, tz = "") - lubridate::minutes((Num - 1)*10)
+  Sat_URL$Time     = ISOdate(Time_Spl$Year[2], Time_Spl$Month[2], Time_Spl$Day[2], Time_Spl$Hour[2], Time_Spl$Min[2], 0, tz = "") - lubridate::minutes((Sat_URL$Num - 1)*10)
   Sat_URL$Time_UTC = lubridate::with_tz(Sat_URL$Time, tzone = "UTC")
-  Sat_URL$Date     = paste(sprintf("%02d", lubridate::month(Sat_URL$Time)), sprintf("%02d", lubridate::day(Sat_URL$Time)), sep = "")
+  Sat_URL$Date     = paste(sprintf("%04d", lubridate::year( Sat_URL$Time)),
+                           sprintf("%02d", lubridate::month(Sat_URL$Time)),
+                           sprintf("%02d", lubridate::day(  Sat_URL$Time)),
+                           sep = "")
   Sat_URL$URL      = paste("https://www.hko.gov.hk/wxinfo/intersat/satellite/image/images/h8L_",
                            type, "_x", magn, "M_",
                            sprintf("%04d", lubridate::year(  Sat_URL$Time_UTC)),
@@ -46,7 +53,7 @@ HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), 
                            sprintf("%02d", lubridate::hour(  Sat_URL$Time_UTC)),
                            sprintf("%02d", lubridate::minute(Sat_URL$Time_UTC)),
                            "00.png", sep = "")
-  Sat_URL$Dir      = paste(getwd(), "/Sat", sprintf("%02d", magn), type, "/", Date, "/",
+  Sat_URL$Dir      = paste(getwd(), "/Sat", sprintf("%02d", magn), type, "/", Sat_URL$Date, "/",
                            magn, type, "-",
                            sprintf("%04d", lubridate::year(  Sat_URL$Time)),
                            sprintf("%02d", lubridate::month( Sat_URL$Time)),

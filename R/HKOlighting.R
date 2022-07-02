@@ -1,10 +1,10 @@
-#' Download lighting And radar images from HKO and stores them in the working directory orderly according to date.
+#' Download lighting and radar images from HKO and stores them in the working directory orderly according to date.
 #'
 #' @param range The radar image range in kilometers. Only accepts values 64 or 256.
 #' @param type The type of lighting data, which includes "cloud to cloud"(CC) and "cloud to ground"(CG). Only accepts CC and CG
 #' @param DDays The duration of images to be downloaded in days. Only accepts numerical values.
-#' @param DTime The starting time of images to be downloaded, starting from the latest time. Only accepts POSIXct.
-#' @param listfail List the date/time of failed download attempts. Only accepts T/F/1/0
+#' @param DTime The starting time of images to be downloaded, starting from the latest time. Only accepts POSIXct (tip: create POSIXct via base::ISOdate).
+#' @param listfail List the date/time of failed download attempts. Only accepts T/F/1/0.
 #'
 #' @return
 #' @export
@@ -28,6 +28,7 @@ HKOlighting = function(range = 64, type = "CC", DDays = 4.5, DTime = Sys.time(),
     return("---Download Failed---")
   }
   #Define additional variables
+  DTime = with_tz(DTime, tz = "HongKong")
   updt = ifelse(range == 64, 6, 12)
   dit = ifelse(range == 256, 6, 0)
   FailN = 0

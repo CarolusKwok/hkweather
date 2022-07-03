@@ -2,4 +2,8 @@
 
 export(HKOall)
 export(HKOlighting)
+export(HKOrfhr)
 export(HKOsatellite)
+export(HKOwind)
+export(hkw_dir.cre)
+export(hkw_fil.cre)

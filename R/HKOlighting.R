@@ -31,8 +31,6 @@ HKOlighting = function(range = 64, type = "CC", DDays = 4.5, DTime = Sys.time(),
   DTime = lubridate::with_tz(DTime, tz = "HongKong")
   updt = ifelse(range == 64, 6, 12)
   dit = ifelse(range == 256, 6, 0)
-  FailN = 0
-  Fail = list()
   #Find the current time and the ending time of the duration, and download!
   Time_Spl = data.frame(Time  = c("Now", "Lighting"),
                         Year  = lubridate::year(DTime),
@@ -61,28 +59,8 @@ HKOlighting = function(range = 64, type = "CC", DDays = 4.5, DTime = Sys.time(),
                        sprintf("%02d",   lubridate::hour(Lig_URL$Time)),
                        sprintf("%02d", lubridate::minute(Lig_URL$Time)),
                        ".png", sep="")
-  Fld_Dis = data.frame(Date = unique(Lig_URL$Date))
-  dir.create(paste(getwd(), "/Lighting", sprintf("%03d", range), type, sep=""), showWarnings = F)
-  for(i in 1:nrow(Fld_Dis)){
-    dir.create(paste(getwd(), "/Lighting", sprintf("%03d", range), type, "/", Fld_Dis$Date[i], sep=""), showWarnings = F)
-  }
-  message("...Initiate download process...")
-  for(i in nrow(Lig_URL):1){
-    URL = Lig_URL$URL[i]
-    DIR = Lig_URL$DIR[i]
-    if(!file.exists(DIR)){
-      tryCatch(download.file(URL, DIR, mode = "wb", quiet = T),
-               error = function(e){
-                 Fail <<- append(Fail, format(Lig_URL$Time[i], "%Y%m%d %H:%M"))
-                 FailN <<- FailN + 1})
-    }
-  }
-  message("---Download complete---")
-  message(paste("Number of failed downloads:", FailN))
-  message(paste("Starting Date/Time: "), DTime)
-  message(paste("Duration of time:", DDays, "days"))
-  if(listfail){
-    message("Failed date/time as follow:")
-    message(paste(shQuote(Fail), collapse=", "))
-  }
+  hkw_dir.cre(pri = c("/Lighting", sprintf("%03d", range), type), sec = unique(Lig_URL$Date))
+  hkw_fil.cre(DTime = DTime, DDays = DDays,
+              URL = Lig_URL$URL, DIR = Lig_URL$DIR, Time = Lig_URL$Time,
+              listfail = listfail)
 }

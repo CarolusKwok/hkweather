@@ -2,7 +2,7 @@
 % Please edit documentation in R/HKOall.R
 \name{HKOall}
 \alias{HKOall}
-\title{Downloads all the satellite images and lighting images from the Hong Kong Observatory. No parameters are utilized}
+\title{Downloads all the satellite images and lighting images from the Hong Kong Observatory. If there is a Chinese and English version, only downloads the English version.}
 \usage{
 HKOall()
 }
@@ -10,7 +10,7 @@ HKOall()
 
 }
 \description{
-Downloads all the satellite images and lighting images from the Hong Kong Observatory. No parameters are utilized
+Downloads all the satellite images and lighting images from the Hong Kong Observatory. If there is a Chinese and English version, only downloads the English version.
 }
 \examples{
 HKOall()

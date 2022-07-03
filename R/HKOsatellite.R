@@ -29,8 +29,6 @@ HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), 
   }
   #Define additional variables
   DTime = lubridate::with_tz(DTime, tz = "HongKong")
-  FailN = 0
-  Fail = list()
   #Find the current time and the ending time of the duration, and download!
   Time_Spl = data.frame(Time  = c("Now", "Sat"),
                         Year  = lubridate::year(DTime),
@@ -53,7 +51,7 @@ HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), 
                            sprintf("%02d", lubridate::hour(  Sat_URL$Time_UTC)),
                            sprintf("%02d", lubridate::minute(Sat_URL$Time_UTC)),
                            "00.png", sep = "")
-  Sat_URL$Dir      = paste(getwd(), "/Sat", sprintf("%02d", magn), type, "/", Sat_URL$Date, "/",
+  Sat_URL$DIR      = paste(getwd(), "/Sat", sprintf("%02d", magn), type, "/", Sat_URL$Date, "/",
                            magn, type, "-",
                            sprintf("%04d", lubridate::year(  Sat_URL$Time)),
                            sprintf("%02d", lubridate::month( Sat_URL$Time)),
@@ -61,28 +59,8 @@ HKOsatellite = function(magn = 8, type = "dc", DDays = 3.5, DTime = Sys.time(), 
                            sprintf("%02d", lubridate::hour(  Sat_URL$Time)),
                            sprintf("%02d", lubridate::minute(Sat_URL$Time)),
                            ".png", sep = "")
-  Fld_Dis = data.frame(Date = unique(Sat_URL$Date))
-  dir.create(paste(getwd(), "/Sat", sprintf("%02d", magn), type, sep=""), showWarnings = F)
-  for(i in 1:nrow(Fld_Dis)){
-    dir.create(paste(getwd(), "/Sat", sprintf("%02d", magn), type, "/", Fld_Dis$Date[i], sep=""), showWarnings = F)
-  }
-  message("...Initiate download process...")
-  for(i in nrow(Sat_URL):1){
-    URL = Sat_URL$URL[i]
-    DIR = Sat_URL$Dir[i]
-    if(!file.exists(DIR)){
-      tryCatch(download.file(URL, DIR, mode = "wb", quiet = T),
-               error = function(e){
-                 Fail <<- append(Fail, format(Sat_URL$Time[i], "%Y%m%d %H:%M"))
-                 FailN <<- FailN + 1})
-    }
-  }
-  message("---Download complete---")
-  message(paste("Starting Date/Time: "), DTime)
-  message(paste("Duration of time:", DDays, "days"))
-  message(paste("Number of failed downloads:", FailN))
-  if(listfail){
-    message("Failed date/time as follow:")
-    message(paste(shQuote(Fail), collapse=", "))
-  }
+  hkw_dir.cre(pri = c("/Sat", sprintf("%02d", magn), type), sec = unique(Sat_URL$Date))
+  hkw_fil.cre(DTime = DTime, DDays = DDays,
+              URL = Sat_URL$URL, DIR = Sat_URL$DIR, Time = Sat_URL$Time,
+              listfail = listfail)
 }

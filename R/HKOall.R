@@ -55,5 +55,8 @@ HKOall = function(){
   message("Hourly Rainfall --- English")
   HKOrfhr(lan = "e")
   message("")
+  message("5 minute tidal height --- English")
+  HKOtide(lan = "e")
+  message("")
   message("-----------Download completed-----------")
 }

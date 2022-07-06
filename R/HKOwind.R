@@ -9,6 +9,7 @@
 #'
 #' @examples HKOwind()
 HKOwind = function(type = "wind", lan = "e", listfail = F){
+  hkw_lib()
   #Check the input data
   flag_type = ifelse((type == "gust" | type == "wind"), F, T)
   flag_lan = ifelse((lan == "e" | lan == "c"), F, T)
@@ -27,28 +28,28 @@ HKOwind = function(type = "wind", lan = "e", listfail = F){
   type_casted = ifelse(type == "gust", "Gust", "Wind")
   lan_casted = toupper(lan)
   DTime = Sys.time()
-  DTime_HKT = lubridate::with_tz(DTime, tz = "HongKong")
+  DTime_HKT = with_tz(DTime, tz = "HongKong")
   #Find the current time and the ending time of the duration, and download!
   Time_Spl = data.frame(Time  = c("Now", "Wind"),
-                        Year  = lubridate::year(DTime_HKT),
-                        Month = lubridate::month(DTime_HKT),
-                        Day   = lubridate::day(DTime_HKT),
-                        Hour  = lubridate::hour(DTime_HKT),
-                        Min   = c(lubridate::minute(DTime_HKT), lubridate::minute(DTime_HKT)-lubridate::minute(DTime_HKT)%%10))
+                        Year  = year(DTime_HKT),
+                        Month = month(DTime_HKT),
+                        Day   = day(DTime_HKT),
+                        Hour  = hour(DTime_HKT),
+                        Min   = c(minute(DTime_HKT), minute(DTime_HKT)-minute(DTime_HKT)%%10))
   Wind_URL = data.frame(Num = 1:144)
-  Wind_URL$Time = ISOdate(Time_Spl$Year[2], Time_Spl$Month[2], Time_Spl$Day[2], Time_Spl$Hour[2], Time_Spl$Min[2], 0, tz = "") - lubridate::minutes((Wind_URL$Num - 1)*10)
-  Wind_URL$Date = paste(sprintf("%04d", lubridate::year( Wind_URL$Time)),
-                        sprintf("%02d", lubridate::month(Wind_URL$Time)),
-                        sprintf("%02d", lubridate::day(  Wind_URL$Time)),
+  Wind_URL$Time = ISOdate(Time_Spl$Year[2], Time_Spl$Month[2], Time_Spl$Day[2], Time_Spl$Hour[2], Time_Spl$Min[2], 0, tz = "") - minutes((Wind_URL$Num - 1)*10)
+  Wind_URL$Date = paste(sprintf("%04d", year( Wind_URL$Time)),
+                        sprintf("%02d", month(Wind_URL$Time)),
+                        sprintf("%02d", day(  Wind_URL$Time)),
                         sep = "")
   Wind_URL$URL = paste(URL_s, type, lan, "hk_",
-                       sprintf("%02d", lubridate::hour(  Wind_URL$Time)),
-                       sprintf("%02d", lubridate::minute(Wind_URL$Time)), ".png",
+                       sprintf("%02d", hour(  Wind_URL$Time)),
+                       sprintf("%02d", minute(Wind_URL$Time)), ".png",
                        sep = "")
   Wind_URL$DIR = paste(getwd(),"/",type_casted, lan_casted,"/",Wind_URL$Date,"/",
                        type_casted, lan_casted, "-", Wind_URL$Date,"-",
-                       sprintf("%02d", lubridate::hour(Wind_URL$Time)),
-                       sprintf("%02d", lubridate::minute(Wind_URL$Time)), ".png",
+                       sprintf("%02d", hour(Wind_URL$Time)),
+                       sprintf("%02d", minute(Wind_URL$Time)), ".png",
                        sep = "")
   hkw_dir.cre(pri = c(type_casted, lan_casted), sec = unique(Wind_URL$Date))
   hkw_fil.cre(DTime = DTime, DDays = 1,

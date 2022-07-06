@@ -19,7 +19,7 @@ HKOsatellite(
 
 \item{DDays}{The duration of images to be downloaded in days. Only accepts numerical values.}
 
-\item{DTime}{The starting time of images to be downloaded, starting from the latest time. Only accepts POSIXct (tip: create POSIXct via base::ISOdate).}
+\item{DTime}{The starting time of images to be downloaded, starting from the latest time. Only accepts POSIXct (tip: create POSIXct via ISOdatetime).}
 
 \item{listfail}{List the date/time of failed download attempts. Only accepts T/F/1/0.}
 }

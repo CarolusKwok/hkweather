@@ -2,16 +2,16 @@
 % Please edit documentation in R/HKOrfhr.R
 \name{HKOrfhr}
 \alias{HKOrfhr}
-\title{Download hourly rainfall images from HKO and stores them in the working directory orderly according to date.}
+\title{Download hourly rainfall images}
 \usage{
 HKOrfhr(DDays = 7, DTime = Sys.time(), STime = NA, lan = "e", listfail = F)
 }
 \arguments{
 \item{DDays}{The duration of images to be downloaded in days. Only accepts numerical values.}
 
-\item{DTime}{The starting time of images to be downloaded, at the latest time. Only accepts POSIXct (tip: create POSIXct via base::ISOdate).}
+\item{DTime}{The starting time of images to be downloaded, at the latest time. Only accepts POSIXct (tip: create POSIXct via ISOdate).}
 
-\item{STime}{The ending time of images to be downloaded, at the earliest time. Only accepts POSIXct (tip: create POSIXct via base::ISOdate).}
+\item{STime}{The ending time of images to be downloaded, at the earliest time. Only accepts POSIXct (tip: create POSIXct via ISOdate).}
 
 \item{lan}{Language of descriptive text within the pictures. Only accepts "e"/ "c" as char.}
 
@@ -21,7 +21,8 @@ HKOrfhr(DDays = 7, DTime = Sys.time(), STime = NA, lan = "e", listfail = F)
 
 }
 \description{
-Download hourly rainfall images from HKO and stores them in the working directory orderly according to date.
+Download from HKO.
+Stores them in the working directory orderly according to date.
 }
 \examples{
 HKOrfhr()

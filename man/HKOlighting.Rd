@@ -2,7 +2,7 @@
 % Please edit documentation in R/HKOlighting.R
 \name{HKOlighting}
 \alias{HKOlighting}
-\title{Download lighting and radar images from HKO and stores them in the working directory orderly according to date.}
+\title{Download lighting and radar images}
 \usage{
 HKOlighting(
   range = 64,
@@ -19,7 +19,7 @@ HKOlighting(
 
 \item{DDays}{The duration of images to be downloaded in days. Only accepts numerical values.}
 
-\item{DTime}{The starting time of images to be downloaded, starting from the latest time. Only accepts POSIXct (tip: create POSIXct via base::ISOdate).}
+\item{DTime}{The starting time of images to be downloaded, starting from the latest time. Only accepts POSIXct (tip: create POSIXct via ISOdate).}
 
 \item{listfail}{List the date/time of failed download attempts. Only accepts T/F/1/0.}
 }
@@ -27,7 +27,7 @@ HKOlighting(
 
 }
 \description{
-Download lighting and radar images from HKO and stores them in the working directory orderly according to date.
+Download from HKO and stores them in the working directory orderly according to date.
 }
 \examples{
 HKOlighting()

@@ -10,6 +10,7 @@ hkw_lib()
 
 }
 \description{
+So I don't need to type dplyr:: 200 times
 Warning! This is an internal system command. Users should not use this!
 }
 \examples{

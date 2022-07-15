@@ -35,8 +35,8 @@ HKOwind = function(type = "wind", lan = "e", listfail = F){
                         Month = month(DTime_HKT),
                         Day   = day(DTime_HKT),
                         Hour  = hour(DTime_HKT),
-                        Min   = c(minute(DTime_HKT), minute(DTime_HKT)-minute(DTime_HKT)%%10))
-  Wind_URL = data.frame(Num = 1:144)
+                        Min   = c(minute(DTime_HKT), minute(DTime_HKT)-minute(DTime_HKT)%%10-10))
+  Wind_URL = data.frame(Num = 1:143)
   Wind_URL$Time = ISOdate(Time_Spl$Year[2], Time_Spl$Month[2], Time_Spl$Day[2], Time_Spl$Hour[2], Time_Spl$Min[2], 0, tz = "") - minutes((Wind_URL$Num - 1)*10)
   Wind_URL$Date = paste(sprintf("%04d", year( Wind_URL$Time)),
                         sprintf("%02d", month(Wind_URL$Time)),

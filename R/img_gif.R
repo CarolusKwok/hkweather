@@ -7,8 +7,8 @@
 #' @return
 #' @export
 #'
-#' @examples cre_gif()
-cre_gif = function(DIR = NA, name = NA, fps = 25){
+#' @examples img_gif()
+img_gif = function(DIR = NA, name = NA, fps = 25){
   hkw_lib()
   #Check if DIR exist
   if(sum(is.na(DIR))){
@@ -48,7 +48,10 @@ cre_gif = function(DIR = NA, name = NA, fps = 25){
   message("Joining frames")
   frame_join = image_join(frame_list)
   message("Writing file")
-  mimage_write_gif(image = frame_join, path = paste0(getwd(), "/", name, ".gif"), delay = 1/fps)
-  rm(list = c(frame_list, frame_join, frame_1, frame_n))
+  image_write_gif(image = frame_join, path = paste0(getwd(), "/", name, ".gif"), delay = 1/fps)
+  rm(frame_list)
+  rm(frame_join)
+  rm(frame_1)
+  rm(frame_n)
   gc()
 }

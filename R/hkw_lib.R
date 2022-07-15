@@ -1,5 +1,6 @@
 #' Loads all necessary library for HKW
 #'
+#' So I don't need to type dplyr:: 200 times
 #' Warning! This is an internal system command. Users should not use this!
 #'
 #' @return
@@ -7,11 +8,10 @@
 #'
 #' @examples hkw_lib()
 hkw_lib = function(){
-  suppressPackageStartupMessages(library(dplyr))
-  suppressPackageStartupMessages(library(ggplot2))
+  suppressPackageStartupMessages(library(data.table))
   suppressPackageStartupMessages(library(gifski))
   suppressPackageStartupMessages(library(lubridate))
   suppressPackageStartupMessages(library(magick))
-  suppressPackageStartupMessages(library(stringr))
-  suppressPackageStartupMessages(library(tidyr))
+  suppressPackageStartupMessages(library(tidyverse))
+  suppressPackageStartupMessages(library(svglite))
 }

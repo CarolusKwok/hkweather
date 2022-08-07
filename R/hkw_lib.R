@@ -8,6 +8,7 @@
 #'
 #' @examples hkw_lib()
 hkw_lib = function(){
+  suppressPackageStartupMessages(library(xlsx))
   suppressPackageStartupMessages(library(data.table))
   suppressPackageStartupMessages(library(gifski))
   suppressPackageStartupMessages(library(lubridate))

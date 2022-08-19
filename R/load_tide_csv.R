@@ -12,10 +12,27 @@
 #' @return
 #' @export
 #'
-#' @examples load_tide()
-load_tide = function(ETime = Sys.time(), DDays = 7, STime = NA, type = "both", lan = "en", listfail = F){
+#' @examples load_tide_csv()
+load_tide_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, type = "both", lan = "en", listfail = F){
   hkweather::hkw_lib()
   #Test input
+  flag_ETime = !is.POSIXct(ETime)
+  flag_DDays = !is.numeric(DDays)
+  flag_STime = ifelse(!is.na(STime), !is.POSIXct(STime), F)
+  flag_type  = ifelse((type == "both"| type == "hko"| type == "md"), F, T)
+  flag_lan   = ifelse((lan == "en" | lan == "tc" | lan == "sc"), F, T)
+  flag_listfail = !(is.numeric(listfail) | is.logical(listfail))
+  flag_all   = flag_ETime + flag_DDays + flag_STime + flag_type + flag_lan + flag_listfail
+  if(flag_all > 0){
+    message("Warning! Something is wrong in the input")
+    if(flag_ETime){message("Variable ETime is wrong! (POSIXct date/time only)")}
+    if(flag_DDays){message("Variable DDays is wrong! (numeric values only)")}
+    if(flag_STime){message("Variable STime is wrong! (POSIXct date/time only)")}
+    if(flag_type){message("Variable type is wrong! (both/ hko/ md as char only)")}
+    if(flag_lan){message("Variable lan is wrong! (en/ tc/ sc as char only)")}
+    if(flag_listfail){message("Variable listfail is wrong! (T/F/1/0 only)")}
+    return(message("---Download Failed---"))
+  }
   #Addtional variables
   if(lan == "en"){
     nlan = "en"
@@ -124,10 +141,10 @@ load_tide = function(ETime = Sys.time(), DDays = 7, STime = NA, type = "both", l
                               "/", "Data",
                               "/", "TIDE",
                               "/", "TIDE(md)-", lan,
-                              "/", substr(URL$Date_p, 1, 4),
-                              "/", substr(URL$Date_p, 1, 6),
-                              "/", URL$Date_p,
-                              "/", "TIDE(md)", toupper(lan), "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                              "/", substr(URL$Date_n_p, 1, 4),
+                              "/", substr(URL$Date_n_p, 1, 6),
+                              "/", URL$Date_n_p,
+                              "/", "TIDE(md)", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
 
     #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Ftide1.hydro.gov.hk%2Fhotide%2FOpenData%2FAll_en.csv&time=20220805-0000"#
     #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Ftide1.hydro.gov.hk%2Fhotide%2FOpenData%2FAll_tc.csv&time=20220805-0000"#
@@ -135,7 +152,7 @@ load_tide = function(ETime = Sys.time(), DDays = 7, STime = NA, type = "both", l
     #Demo for the website
 
     hkw_dir.cre3(wDIR = URL$DIR, filename = T)
-    hkw_fil.cre2(URL = URL$URL, DIR = URL$DIR, Time = URL$Time,
+    hkw_fil.cre3(URL = URL$URL, DIR = URL$DIR, Time = URL$Time,
                  listfail = listfail)
   }
 }

@@ -1,6 +1,4 @@
-#' Download Wind and Gust data from HKO in CSV format
-#'
-#' Downloads and stores them in the working directory orderly according to date.
+#' Download HKO rainfall nowcast information
 #'
 #' @param ETime The newest csv to be downloaded, starting from the latest time. Only accepts POSIXct (tip: create POSIXct via ISOdatetime).
 #' @param DDays The duration of images to be downloaded in days. Only accepts numerical values.
@@ -11,8 +9,8 @@
 #' @return
 #' @export
 #'
-#' @examples load_wind_csv()
-load_wind_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", listfail = F){
+#' @examples load_rhum_csv()
+load_rhum_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", listfail = F){
   hkweather::hkw_lib()
   #Test input
   flag_ETime = !is.POSIXct(ETime)
@@ -75,26 +73,28 @@ load_wind_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", 
                             sprintf("%02d",    day(URL$Time)))
   URL$Time_p       = paste0(sprintf("%02d",   hour(URL$Time)),
                             sprintf("%02d", minute(URL$Time)))
-  URL$Time_n       = URL$Time - minutes(dit)
+
+  URL$Time_n       = URL$Time - minutes(10)
   URL$Date_n_p     = paste0(sprintf("%04d",   year(URL$Time_n)),
                             sprintf("%02d",  month(URL$Time_n)),
                             sprintf("%02d",    day(URL$Time_n)))
   URL$Time_n_p     = paste0(sprintf("%02d",   hour(URL$Time_n)),
                             sprintf("%02d", minute(URL$Time_n)))
-  URL$URL          = paste0("https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_10min_wind",
-                            nlan, ".csv&time=", URL$Date_p, "-",URL$Time_p)
+
+  URL$URL          = paste0("https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_humidity",
+                            nlan, ".csv&time=", URL$Date_p, "-", URL$Time_p)
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
-                            "/", "WIND",
-                            "/", "WIND(csv)-", lan,
+                            "/", "RHUM",
+                            "/", "RHUM(csv)-", lan,
                             "/", substr(URL$Date_n_p, 1, 4),
                             "/", substr(URL$Date_n_p, 1, 6),
                             "/", URL$Date_n_p,
-                            "/", "WIND-CSV", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                            "/", "RHUM-CSV", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
 
-  #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_10min_wind.csv&time=20220805-0000"#
-  #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_10min_wind_uc.csv&time=20220805-0000"#
-  #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_10min_wind_sc.csv&time=20220805-0000"#
+  #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_humidity.csv&time=20220808-0000#
+  #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_humidity_uc.csv&time=20220808-0000#
+  #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_humidity_sc.csv&time=20220808-0000#
   #Demo for the website
 
   hkw_dir.cre3(wDIR = URL$DIR, filename = T)

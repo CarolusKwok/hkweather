@@ -6,8 +6,6 @@
 #DDays = Duration of Time between ETime and STime
 #listfail = List all failed downloads
 
-
-
 #Special requirements
 #STime = Starting Time of download duration
 #lan = language of descriptive text
@@ -15,11 +13,19 @@
 
 
 
-#use_r("load_ltng")
-#use_r("load_rain_csv")
-#use_r("load_rain_hr")
-#use_r("load_rain_dy")
-#use_r("load_satl")
-#use_r("load_tide")
-#use_r("load_wind")
-#use_r("load_wind_csv")
+
+
+
+#Type of data
+#export(load_ltng) = load lighting image from HKO website, fil2
+#export(load_mslp) = load mean sea level pressure from HK gov open data, fil3
+#export(load_rain_csv) = load rainfall nowcast data from HK gov open data, fil3
+#export(load_rain_dy) = load rainfall daily data from HKO, fil2
+#export(load_rain_hr) = load rainfall hourly data from HKO, fil2
+#export(load_rhum) = load relative humidity data from HK gov open data
+#export(load_satl) = load satellite image data from HKO, fil2
+#export(load_temp) = load surface air temperature from HK gov open data, fil3
+#export(load_tide) = load actual tide data from HK gov open data, fil3
+#export(load_wind) = load wind image from HKO, fil2
+#export(load_wind_csv) = load wind data from HK gov open data, fil3
+

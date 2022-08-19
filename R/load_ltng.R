@@ -16,6 +16,23 @@
 load_ltng = function(ETime = Sys.time(), DDays = 4.5, STime = NA, type = "cc", range = 64, listfail = F){
   hkweather::hkw_lib()
   #Test input
+  flag_ETime = !is.POSIXct(ETime)
+  flag_DDays = !is.numeric(DDays)
+  flag_STime = ifelse(!is.na(STime), !is.POSIXct(STime), F)
+  flag_type  = ifelse((type == "cc" | type == "cg"), F, T)
+  flag_range = ifelse((range == 64 | range == 256), F, T)
+  flag_listfail = !(is.numeric(listfail) | is.logical(listfail))
+  flag_all   = flag_ETime + flag_DDays + flag_STime + flag_type + flag_range + flag_listfail
+  if(flag_all > 0){
+    message("Warning! Something is wrong in the input")
+    if(flag_ETime){message("Variable ETime is wrong! (POSIXct date/time only)")}
+    if(flag_DDays){message("Variable DDays is wrong! (numeric values only)")}
+    if(flag_STime){message("Variable STime is wrong! (POSIXct date/time only)")}
+    if(flag_type){message("Variable type is wrong! (cc/ cg as char only)")}
+    if(flag_range){message("Variable range is wrong! (64/ 256 as int only)")}
+    if(flag_listfail){message("Variable listfail is wrong! (T/F/1/0 only)")}
+    return(message("---Download Failed---"))
+  }
 
   #Addtional variables
   dit  = ifelse(range == 64, 6, 12)

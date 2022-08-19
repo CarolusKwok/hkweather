@@ -10,6 +10,18 @@
 #' @examples load_wind()
 load_wind = function(type = "wind", lan = "en", listfail = F){
   hkweather::hkw_lib()
+  #Test input
+  flag_type  = ifelse((type == "wind" | type == "gust"), F, T)
+  flag_lan   = ifelse((lan == "en" | lan == "tc" | lan == "sc"), F, T)
+  flag_listfail = !(is.numeric(listfail) | is.logical(listfail))
+  flag_all   = flag_type + flag_lan + flag_listfail
+  if(flag_all > 0){
+    message("Warning! Something is wrong in the input")
+    if(flag_type){message("Variable type is wrong! (wind/ gust as char only)")}
+    if(flag_lan){message("Variable lan is wrong! (en/ tc/ sc as char only)")}
+    if(flag_listfail){message("Variable listfail is wrong! (T/F/1/0 only)")}
+    return(message("---Download Failed---"))
+  }
   #Addtional variables
   dit = 10
   if(type == "wind"){

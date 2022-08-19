@@ -5,7 +5,7 @@
 #'
 #' @examples load_all()
 load_all = function(listfail = F){
-  message("...Downloading all available HKO data...")
+  message("..........Downloading all available HKO data..........")
 
 
   message("")
@@ -39,7 +39,7 @@ load_all = function(listfail = F){
   load_satl(magn = 4, type = "ir", listfail = listfail)
   message("")
   message("Satellite --- 2 times, Infra-Red")
-  HKOsatellite(magn = 2, type = "ir", listfail = listfail)
+  load_satl(magn = 2, type = "ir", listfail = listfail)
   message("")
   message("Satellite --- 8 times, Deep-Convection")
   load_satl(magn = 8, type = "dc", listfail = listfail)
@@ -67,12 +67,28 @@ load_all = function(listfail = F){
 
   message("")
   message("5 minute tidal height (HKO) --- English")
-  load_tide(type = "hko", listfail = listfail)
+  load_tide_csv(type = "hko", listfail = listfail)
   message("")
   message("10 minute tidal height (MD) --- English")
-  load_tide(type = "md", listfail = listfail)
+  load_tide_csv(type = "md", listfail = listfail)
+
+  message("")
+  message("Surface air temperature --- English")
+  load_temp_csv(listfail = listfail)
+  message("")
+  message("Mean surface level pressure --- English")
+  load_mslp_csv(listfail = listfail)
+  message("")
+  message("Relative humidity --- English")
+  load_rhum_csv(listfail = listfail)
+  message("")
+  message("Grass temperature --- English")
+  load_gtmp_csv(listfail = listfail)
+  message("")
+  message("Solar radiation --- English")
+  load_sart_csv(listfail = listfail)
 
 
   message("")
-  message("-----------Download completed-----------")
+  message("------------------Download completed------------------")
 }

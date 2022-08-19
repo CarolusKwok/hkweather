@@ -15,6 +15,22 @@
 #' @examples load_rain_hr()
 load_rain_hr = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", listfail = F){
   hkweather::hkw_lib()
+  #Test input
+  flag_ETime = !is.POSIXct(ETime)
+  flag_DDays = !is.numeric(DDays)
+  flag_STime = ifelse(!is.na(STime), !is.POSIXct(STime), F)
+  flag_lan   = ifelse((lan == "en" | lan == "tc" | lan == "sc"), F, T)
+  flag_listfail = !(is.numeric(listfail) | is.logical(listfail))
+  flag_all   = flag_ETime + flag_DDays + flag_STime + flag_lan + flag_listfail
+  if(flag_all > 0){
+    message("Warning! Something is wrong in the input")
+    if(flag_ETime){message("Variable ETime is wrong! (POSIXct date/time only)")}
+    if(flag_DDays){message("Variable DDays is wrong! (numeric values only)")}
+    if(flag_STime){message("Variable STime is wrong! (POSIXct date/time only)")}
+    if(flag_lan){message("Variable lan is wrong! (en/ tc/ sc as char only)")}
+    if(flag_listfail){message("Variable listfail is wrong! (T/F/1/0 only)")}
+    return(message("---Download Failed---"))
+  }
   #Addtional variables
   dit = 15
   if(lan == "en"){
@@ -77,6 +93,6 @@ load_rain_hr = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", l
   #Demo for the website
 
   hkw_dir.cre3(wDIR = URL$DIR, filename = T)
-  hkw_fil.cre2(URL = URL$URL, DIR = URL$DIR, Time = URL$Time,
+  hkw_fil.cre3(URL = URL$URL, DIR = URL$DIR, Time = URL$Time,
                listfail = listfail)
 }

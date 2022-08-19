@@ -40,6 +40,6 @@ hkw_dir.cre3 = function(wDIR, filename){
   #Start making the directory!
   if(nrow(DIR_cre) > 0){
     lapply(DIR_cre$DIR, dir.create)
-    message("success")
+    message("Directory successfully created")
   }
 }

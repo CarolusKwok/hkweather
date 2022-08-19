@@ -13,6 +13,15 @@
 load_rain_dy = function(lan = "en", listfail = F){
   hkweather::hkw_lib()
   #Test input
+  flag_lan   = ifelse((lan == "en" | lan == "tc" | lan == "sc"), F, T)
+  flag_listfail = !(is.numeric(listfail) | is.logical(listfail))
+  flag_all   = flag_lan + flag_listfail
+  if(flag_all > 0){
+    message("Warning! Something is wrong in the input")
+    if(flag_lan){message("Variable lan is wrong! (en/ tc/ sc as char only)")}
+    if(flag_listfail){message("Variable listfail is wrong! (T/F/1/0 only)")}
+    return(message("---Download Failed---"))
+  }
   #Addtional variables
   ETime = Sys.time()
   dit = 1

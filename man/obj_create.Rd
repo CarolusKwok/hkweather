@@ -9,7 +9,7 @@ obj_create(rDIR, type)
 \arguments{
 \item{rDIR}{Reading Directory. Which folder should I read to get all the information?}
 
-\item{type}{Type of data. Which type of data it is? "tide" or "wind"}
+\item{type}{Type of data. Which type of data it is? (Only accepts gtmp/ mslp/ rain/ rhum/ sart/ temp/ tide/ wind)}
 }
 \value{
 

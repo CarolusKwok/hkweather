@@ -76,11 +76,11 @@ load_ltng = function(ETime = Sys.time(), DDays = 4.5, STime = NA, type = "cc", r
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "LTNG",
-                            "/", "LTNG-", sprintf("%03d", range), type,
+                            "/", "LTNG", sprintf("%03d", range), type,
                             "/", substr(URL$Date_p, 1, 4),
                             "/", substr(URL$Date_p, 1, 6),
                             "/", URL$Date_p,
-                            "/", sprintf("%03d", range), type, "-", URL$Date_p, "-", URL$Time_p, ".png")
+                            "/", "LTNG", sprintf("%03d", range), type, "_", URL$Date_p, "_", URL$Time_p, ".png")
 
   #https://www.hko.gov.hk/wxinfo/llis/llisradar/images/lli_256CG_202208051730.png#
   #https://www.hko.gov.hk/wxinfo/llis/llisradar/images/lli_64CG_202208051736.png#

@@ -1,4 +1,4 @@
-#' Creates an hkweather obj from source files
+#' Creates an hkweather object from source files
 #'
 #' @param rDIR Reading Directory. Which folder should I read to get all the information?
 #' @param type Type of data. Which type of data it is? (Only accepts gtmp/ mslp/ rain/ rhum/ sart/ temp/ tide/ wind)

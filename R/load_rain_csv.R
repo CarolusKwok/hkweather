@@ -78,11 +78,11 @@ load_rain_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", 
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "RAIN",
-                            "/", "RAIN(csv)-", lan,
+                            "/", "RAIN", lan,
                             "/", substr(URL$Date_p, 1, 4),
                             "/", substr(URL$Date_p, 1, 6),
                             "/", URL$Date_p,
-                            "/", "RAIN-CSV", lan, "-", URL$Date_p, "-", URL$Time_p, ".csv")
+                            "/", "RAIN", lan, "_", URL$Date_p, "_", URL$Time_p, ".csv")
 
   #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2FF3%2FGridded_rainfall_nowcast.csv&time=20220805-0000"#
   #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2FF3%2FGridded_rainfall_nowcast_tc.csv&time=20220805-0000"#

@@ -87,11 +87,11 @@ load_sart_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", 
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "SART",
-                            "/", "SART(csv)-", lan,
+                            "/", "SART", lan,
                             "/", substr(URL$Date_n_p, 1, 4),
                             "/", substr(URL$Date_n_p, 1, 6),
                             "/", URL$Date_n_p,
-                            "/", "SART-", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                            "/", "SART", lan, "_", URL$Date_n_p, "_", URL$Time_n_p, ".csv")
 
   #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_solar.csv&time=20220817-0000"#
   #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_solar_uc.csv&time=20220817-0000"#

@@ -82,11 +82,11 @@ load_rain_hr = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", l
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "RAIN",
-                            "/", "RAIN(png)-hr-", lan,
+                            "/", "RAIN_hr", lan,
                             "/", substr(URL$Date_p, 1, 4),
                             "/", substr(URL$Date_p, 1, 6),
                             "/", URL$Date_p,
-                            "/", "RAIN-hr-", toupper(lan), "-", URL$Date_p, "-", URL$Time_p, ".png")
+                            "/", "RAIN_hr", lan, "_", URL$Date_p, "_", URL$Time_p, ".png")
 
   #"https://www.hko.gov.hk/wxinfo/rainfall/cokrig_barnes/rfmap202208061415e.png"#
   #"https://www.hko.gov.hk/wxinfo/rainfall/cokrig_barnes/rfmap202208061415c.png"#

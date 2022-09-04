@@ -2,7 +2,7 @@
 % Please edit documentation in R/obj_create.R
 \name{obj_create}
 \alias{obj_create}
-\title{Creates an hkweather obj from source files}
+\title{Creates an hkweather object from source files}
 \usage{
 obj_create(rDIR, type)
 }
@@ -15,7 +15,7 @@ obj_create(rDIR, type)
 
 }
 \description{
-Creates an hkweather obj from source files
+Creates an hkweather object from source files
 }
 \examples{
 obj_create(getwd(), type = "tide")

@@ -80,11 +80,11 @@ load_satl = function(ETime = Sys.time(), DDays = 3.5, STime = NA, magn = 8, type
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "SATL",
-                            "/", "SATL-", sprintf("%02d", magn), type,
+                            "/", "SATL", sprintf("%02d", magn), type,
                             "/", substr(URL$Date_p, 1, 4),
                             "/", substr(URL$Date_p, 1, 6),
                             "/", URL$Date_p,
-                            "/", magn, type, "-", URL$Date_p, "-", URL$Time_p, ".png")
+                            "/", "SATL", sprintf("%02d", magn), type, "_", URL$Date_p, "_", URL$Time_p, ".png")
 
   #https://www.hko.gov.hk/wxinfo/intersat/satellite/image/images/h8L_dc_x8M_20220802082000.png#
   #Demo for the website

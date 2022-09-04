@@ -90,11 +90,12 @@ load_wxph = function(ETime = Sys.time(), DDays = 2.5, STime = NA, type = "all", 
     URL$DIR = paste0(getwd(),
                      "/", "Data",
                      "/", "WXPH",
-                     "/", "WXPH_", select,
+                     "/", "WXPH(", select, ")",
                      "/", substr(URL$Date_p, 1, 4),
                      "/", substr(URL$Date_p, 1, 6),
                      "/", URL$Date_p,
-                     "/", "WXPH_", select, "_", URL$Date_p, "_", URL$Time_p, ".jpg")
+                     "/", "WXPH(", select, ")_", URL$Date_p, "_", URL$Time_p, ".jpg")
+
     #01: "https://www.weather.gov.hk/wxinfo/aws/hko_mica/lfs/imgLFS_220817_1430.jpg"
     #02: "https://www.weather.gov.hk/wxinfo/aws/hko_mica/wlp/imgWLP_220817_1445.jpg"
     #03: "https://www.weather.gov.hk/wxinfo/aws/hko_mica/elc/imgELC_220817_1440.jpg"

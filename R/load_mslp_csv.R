@@ -87,11 +87,11 @@ load_mslp_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", 
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "MSLP",
-                            "/", "MSLP(csv)-", lan,
+                            "/", "MSLP", lan,
                             "/", substr(URL$Date_n_p, 1, 4),
                             "/", substr(URL$Date_n_p, 1, 6),
                             "/", URL$Date_n_p,
-                            "/", "MSLP-CSV", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                            "/", "MSLP", lan, "_", URL$Date_n_p, "_", URL$Time_n_p, ".csv")
 
   #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_pressure.csv&time=20220808-0000#
   #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_pressure_uc.csv&time=20220808-0000#

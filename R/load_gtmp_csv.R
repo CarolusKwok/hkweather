@@ -89,11 +89,11 @@ load_gtmp_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", 
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "GTMP",
-                            "/", "GTMP(csv)-", lan,
+                            "/", "GTMP", lan,
                             "/", substr(URL$Date_n_p, 1, 4),
                             "/", substr(URL$Date_n_p, 1, 6),
                             "/", URL$Date_n_p,
-                            "/", "GTMP", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                            "/", "GTMP", lan, "_", URL$Date_n_p, "_", URL$Time_n_p, ".csv")
 
   #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_grass.csv&time=20220817-0000"#
   #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_grass_uc.csv&time=20220817-0000"#

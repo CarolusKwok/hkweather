@@ -67,11 +67,14 @@ load_wind = function(type = "wind", lan = "en", listfail = F){
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "WIND",
-                            "/", "WIND-", type, "-", lan,
+                            "/", "WIND(", type, ")", lan,
                             "/", substr(URL$Date_p, 1, 4),
                             "/", substr(URL$Date_p, 1, 6),
                             "/", URL$Date_p,
-                            "/", "WIND-", type, "-", lan, "-", URL$Date_p, "-", URL$Time_p, ".png")
+                            "/", "WIND(", type, ")", lan, "_", URL$Date_p, "_", URL$Time_p, ".png")
+
+
+
 
   #         https://www.hko.gov.hk/wxinfo/ts/windehk_0000.png#
   #https://www.hko.gov.hk/wxinfo/ts/windgust/gustehk_1930.png#

@@ -4,12 +4,10 @@
 \alias{obj_pivot}
 \title{Pivot data of an object}
 \usage{
-obj_pivot(obj, pivot)
+obj_pivot(obj)
 }
 \arguments{
 \item{obj}{a hkweather object}
-
-\item{pivot}{how should I pivot this? "longer" or "wider"}
 }
 \value{
 
@@ -18,5 +16,5 @@ obj_pivot(obj, pivot)
 Only pivots data with a single station and a single data type
 }
 \examples{
-obj_pivot(obj, "wider")
+obj_pivot(obj)
 }

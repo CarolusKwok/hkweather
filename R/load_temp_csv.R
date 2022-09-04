@@ -86,11 +86,12 @@ load_temp_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, lan = "en", 
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "TEMP",
-                            "/", "TEMP(csv)-", lan,
+                            "/", "TEMP", lan,
                             "/", substr(URL$Date_n_p, 1, 4),
                             "/", substr(URL$Date_n_p, 1, 6),
                             "/", URL$Date_n_p,
-                            "/", "TEMP-CSV", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                            "/", "TEMP", lan, "_", URL$Date_n_p, "_", URL$Time_n_p, ".csv")
+
 
   #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_temperature.csv&time=20220808-0000#
   #https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Fregional-weather%2Flatest_1min_temperature_uc.csv&time=20220808-0000#

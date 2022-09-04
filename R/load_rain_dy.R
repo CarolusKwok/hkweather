@@ -73,10 +73,10 @@ load_rain_dy = function(lan = "en", listfail = F){
   URL$DIR          = paste0(getwd(),
                             "/", "Data",
                             "/", "RAIN",
-                            "/", "RAIN(png)-dy-", lan,
+                            "/", "RAIN_dy", lan,
                             "/", substr(URL$Date_p, 1, 4),
                             "/", substr(URL$Date_p, 1, 6),
-                            "/", "RAIN-dy-", toupper(lan), "-", URL$Date_p, ".png")
+                            "/", "RAIN_dy", lan, "_", URL$Date_p, ".png")
 
   #"https://www.hko.gov.hk/wxinfo/rainfall/cokrig_barnes/rfmap24hrs05010000c.png"#
   #"https://www.hko.gov.hk/wxinfo/rainfall/cokrig_barnes/rfmap24hrs05010000e.png"#

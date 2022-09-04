@@ -2,9 +2,9 @@
 % Please edit documentation in R/obj_graph.R
 \name{obj_graph}
 \alias{obj_graph}
-\title{Graph}
+\title{Graph all the data within an hkweather object}
 \usage{
-obj_graph(obj, graph = c("point", "violin"))
+obj_graph(obj, graph = "all")
 }
 \arguments{
 \item{obj}{a hkweather object}
@@ -15,7 +15,7 @@ obj_graph(obj, graph = c("point", "violin"))
 
 }
 \description{
-Graph
+Graph all the data within an hkweather object
 }
 \examples{
 obj_graph(obj)

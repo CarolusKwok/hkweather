@@ -92,11 +92,11 @@ load_tide_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, type = "both
     URL$DIR          = paste0(getwd(),
                               "/", "Data",
                               "/", "TIDE",
-                              "/", "TIDE(hko)-", lan,
-                              "/", substr(URL$Date_p, 1, 4),
-                              "/", substr(URL$Date_p, 1, 6),
-                              "/", URL$Date_p,
-                              "/", "TIDE(hko)", toupper(lan), "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                              "/", "TIDE(hko)", lan,
+                              "/", substr(URL$Date_n_p, 1, 4),
+                              "/", substr(URL$Date_n_p, 1, 6),
+                              "/", URL$Date_n_p,
+                              "/", "TIDE(hko)", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
 
     #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Ftide%2FALL_en.csv&time=20220805-0000"#
     #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Fdata.weather.gov.hk%2FweatherAPI%2Fhko_data%2Ftide%2FALL_tc.csv&time=20220805-0000"#
@@ -140,11 +140,11 @@ load_tide_csv = function(ETime = Sys.time(), DDays = 7, STime = NA, type = "both
     URL$DIR          = paste0(getwd(),
                               "/", "Data",
                               "/", "TIDE",
-                              "/", "TIDE(md)-", lan,
+                              "/", "TIDE(md)", lan,
                               "/", substr(URL$Date_n_p, 1, 4),
                               "/", substr(URL$Date_n_p, 1, 6),
                               "/", URL$Date_n_p,
-                              "/", "TIDE(md)", lan, "-", URL$Date_n_p, "-", URL$Time_n_p, ".csv")
+                              "/", "TIDE(md)", lan, "_", URL$Date_n_p, "_", URL$Time_n_p, ".csv")
 
     #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Ftide1.hydro.gov.hk%2Fhotide%2FOpenData%2FAll_en.csv&time=20220805-0000"#
     #"https://api.data.gov.hk/v1/historical-archive/get-file?url=https%3A%2F%2Ftide1.hydro.gov.hk%2Fhotide%2FOpenData%2FAll_tc.csv&time=20220805-0000"#

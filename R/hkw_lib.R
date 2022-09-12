@@ -15,4 +15,6 @@ hkw_lib = function(){
   suppressPackageStartupMessages(library(magick))
   suppressPackageStartupMessages(library(tidyverse))
   suppressPackageStartupMessages(library(svglite))
+  suppressPackageStartupMessages(library(mgcv))
+  suppressPackageStartupMessages(library(ggforce))
 }

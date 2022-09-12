@@ -4,12 +4,14 @@
 \alias{load_oisst}
 \title{Download NOAA OISST data}
 \usage{
-load_oisst(EDay, SDay)
+load_oisst(EDay = "1981-09-01", SDay = "1981-09-01", listfail = F)
 }
 \arguments{
 \item{EDay}{Ending Day, which is the later time}
 
 \item{SDay}{Starting Day, which is the older time}
+
+\item{listfail}{List the date/time of failed download attempts. Only accepts T/F/1/0.}
 }
 \value{
 

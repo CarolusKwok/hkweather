@@ -1,12 +1,15 @@
-#' xx
+#' Download atmospheric sounding data metrics
 #'
-#' @param ETime The time of the lastest image. Only accepts POSIXct (tip: create POSIXct via ISOdatetime).
+#' Understanding the sounding is important for understanding the atmospheric condition, especially for extreme weather.
+#' This catches the metrics provided by the University of Wyoming.
+#'
+#' @param ETime The time of the lastest data. Only accepts POSIXct (tip: create POSIXct via ISOdatetime).
 #'
 #' @return
 #' @export
 #'
-#' @examples load_asnd()
-load_asnd = function(ETime = Sys.time(), DDays = 7, STime = NA){
+#' @examples load_asnd_metr()
+load_asnd_metr = function(ETime = Sys.time(), DDays = 7, STime = NA){
   hkweather::hkw_lib()
   #Addtional variables
   dit = 12
@@ -72,18 +75,18 @@ load_asnd = function(ETime = Sys.time(), DDays = 7, STime = NA){
     readlines = T
     read_line = NA
     read_attp = 0
+    read_data = F
     read_URL = URL$URL[i]
     read_Time = with_tz(URL$Time[i], tzone = "HongKong")
-
-
     defaultW = getOption("warn")
     options(warn = -1)
     while(readlines == T){
       read_attp = read_attp + 1
       read_line = tryCatch(readLines(read_URL),
                            error = function(e){NA})
-      if(!is.na(read_line[1]) & !("Can't get" %in% read_line)){
+      if("   PRES   HGHT   TEMP   DWPT   RELH   MIXR   DRCT   SKNT   THTA   THTE   THTV" %in% read_line){
         readlines = F
+        read_data = T
       }
       if(read_attp >= 50){
         message("Download fail")
@@ -97,32 +100,35 @@ load_asnd = function(ETime = Sys.time(), DDays = 7, STime = NA){
     read_attp = 0
 
     #Summary Processing
-    df = data.frame(Lines = read_line)
-    index_s = match(x = "</PRE><H3>Station information and sounding indices</H3><PRE>", df$Lines) +1
-    index_e = match(x = "<P>Description of the ", df$Lines) -2
-    df = data.frame(Lines = df[c(index_s:index_e),1],
-                    Position = NA,
-                    Value = NA) %>%
-      mutate(Position = as.numeric(gregexpr(':', Lines)),
-             Value = substr(Lines,(Position + 2),999),
-             Type = trimws(substr(Lines, 1, (Position - 1)))) %>%
-      select(-c(Position, Lines)) %>%
-      filter(Type != "" & !(Type %in% c("Station latitude", "Station longitude", "Station elevation")))
-    index_s = match(x = "Station number", df$Type)
-    df = df %>%
-      mutate(Station = df$Value[index_s]) %>%
-      filter(!(row_number() %in% index_s))
-    index_s = match(x = "Observation time", df$Type)
-    df = df %>%
-      mutate(Hour = paste0(sprintf("%04d", year(read_Time)), "-",
-                           sprintf("%02d", month(read_Time)), "-",
-                           sprintf("%02d", day(read_Time)), " ",
-                           sprintf("%02d", hour(read_Time))),
-             Min = "Min_00") %>%
-      filter(!(row_number() %in% index_s)) %>%
-      relocate(Station, Hour, Min, Type, Value)
+    if(read_data == T){
+      df = data.frame(Lines = read_line)
+      index_s = match(x = "</PRE><H3>Station information and sounding indices</H3><PRE>", df$Lines) +1
+      index_e = match(x = "<P>Description of the ", df$Lines) -2
+      df = data.frame(Lines = df[c(index_s:index_e),1],
+                      Position = NA,
+                      Value = NA) %>%
+        mutate(Position = as.numeric(gregexpr(':', Lines)),
+               Value = substr(Lines,(Position + 2),999),
+               Type = trimws(substr(Lines, 1, (Position - 1)))) %>%
+        select(-c(Position, Lines)) %>%
+        filter(Type != "" & !(Type %in% c("Station latitude", "Station longitude", "Station elevation")))
+      index_s = match(x = "Station number", df$Type)
+      df = df %>%
+        mutate(Station = df$Value[index_s]) %>%
+        filter(!(row_number() %in% index_s))
+      index_s = match(x = "Observation time", df$Type)
+      df = df %>%
+        mutate(Hour = paste0(sprintf("%04d", year(read_Time)), "-",
+                             sprintf("%02d", month(read_Time)), "-",
+                             sprintf("%02d", day(read_Time)), " ",
+                             sprintf("%02d", hour(read_Time))),
+               Min = "Min_00") %>%
+        filter(!(row_number() %in% index_s)) %>%
+        relocate(Station, Hour, Min, Type, Value)
 
-    df_final = bind_rows(df_final, df)
+      df_final = bind_rows(df_final, df)
+      read_data = F
+    }
   }
   message(       "--------------Download complete--------------")
   message(       "Download process info")

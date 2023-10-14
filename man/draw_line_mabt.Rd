@@ -4,10 +4,12 @@
 \alias{draw_line_mabt}
 \title{Loads moist adiabetic line}
 \usage{
-draw_line_mabt(temp = seq(-50, 50, 10))
+draw_line_mabt(temp = seq(-50, 50, 10), ini_pres = 1000)
 }
 \arguments{
-\item{temp}{Temperature of said gas at a pressure of 1000hPa.}
+\item{temp}{Temperature of said gas at pres.}
+
+\item{ini_pres}{Pressure to start drawing from, default as 1000 hPa}
 }
 \value{
 

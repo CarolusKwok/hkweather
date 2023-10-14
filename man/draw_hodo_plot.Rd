@@ -7,6 +7,7 @@
 draw_hodo_plot(
   data,
   limit = c(0, 99999),
+  equal = "both",
   type = "smooth",
   space = 500,
   df = 0.7,

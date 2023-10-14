@@ -3,15 +3,17 @@
 #' Moist diabetic line refers to the temperature of saturated gas raising into the atmosphere.
 #' This function creates these lines by creating a data frame.
 #'
-#' @param temp Temperature of said gas at a pressure of 1000hPa.
+#' @param temp Temperature of said gas at pres.
+#' @param ini_pres Pressure to start drawing from, default as 1000 hPa
 #'
 #' @return
 #' @export
 #'
 #' @examples load_line_mabt()
-draw_line_mabt = function(temp = seq(-50, 50, 10)){
+draw_line_mabt = function(temp = seq(-50, 50, 10), ini_pres = 1000){
   hkweather::hkw_lib()
 
+  ini_pres = ini_pres / 10
   df = data.frame(type = NA, group = NA, PRES = NA, TEMP = NA)
   Rv = 461
   T0 = 273.15
@@ -26,7 +28,7 @@ draw_line_mabt = function(temp = seq(-50, 50, 10)){
   for(i in 1:length(temp)){
     line = temp[i]
 
-    df_1 = data.frame(PRES = seq(100, 0, -0.05),
+    df_1 = data.frame(PRES = seq(ini_pres, 0, -0.05),
                       TEMP = NA,
                       TEMPK= NA,
                       es   = NA,
@@ -44,7 +46,7 @@ draw_line_mabt = function(temp = seq(-50, 50, 10)){
       }
     }
 
-    df_2 = data.frame(PRES = seq(100, 150, +0.05),
+    df_2 = data.frame(PRES = seq(ini_pres, 150, +0.05),
                       TEMP = NA,
                       TEMPK= NA,
                       es   = NA,

@@ -6,12 +6,13 @@
 #' @param IHUM Draws the isohume line. Default as T.
 #' @param PRES Pressure range of the atmospheric sounding plot.
 #' @param TEMP Temperature range of the atmospheric sounding plot.
+#' @param additional Additional parameters to draw. Currently supports "lcl", "lclp", "lcl_mabt", "lcl_dabt", "lcl_ihum"
 #'
 #' @return
 #' @export
 #'
 #' @examples draw_asnd_plot()
-draw_asnd_plot = function(data = NA, DABT = T, MABT = T, IHUM = T, PRES = c(1000, 100), TEMP = c(-100, 50)){
+draw_asnd_plot = function(data = NA, DABT = T, MABT = T, IHUM = T, PRES = c(1000, 100), TEMP = c(-100, 50), additional = ""){
   hkweather::hkw_lib()
   #Test if stuff makes sense
   flag_DABT = ifelse(is.logical(DABT) | is.numeric(DABT), F, T)
@@ -92,8 +93,8 @@ draw_asnd_plot = function(data = NA, DABT = T, MABT = T, IHUM = T, PRES = c(1000
     geom_path(data = filter(df, type == "IHUM"), aes(group = group), color = "#00BA38", size = 0.5)+
     geom_path(data = filter(df, type == "MABT"), aes(group = group), color = "#619CFF", size = 0.5)+
     theme_bw()+
-    scale_y_continuous(breaks = seq(0, 1500, 100), trans = "log10")+
-    scale_x_continuous(breaks = seq(-280, 100, 10))+
+    scale_y_continuous(breaks = seq(100, 1500, 100), trans = "log10")+
+    scale_x_continuous(breaks = seq(-280, 1000, 10), minor_breaks = seq(-280, 280, 1))+
     labs(y = "Pressure (hPa)", x = "Temperature (°C)", color = "Type")+
     coord_cartesian(ylim = a, xlim = b, expand = F)
 
@@ -112,7 +113,37 @@ draw_asnd_plot = function(data = NA, DABT = T, MABT = T, IHUM = T, PRES = c(1000
         labs(title = paste0("Atmospheric Sounding at ", unique(data_fil$Hour)))+
         geom_path(data = data_fil, aes(y = PRES, x = TEMP), size = 1, color = "RED", inherit.aes = F)+
         geom_path(data = data_fil, aes(y = PRES, x = DWPT), size = 1, color = "BLUE", inherit.aes = F)
+      if(additional != ""){
+        data_lcl = data_fil %>%
+          filter(PRES == max(PRES))
+        dwpt = data_lcl$DWPT[1]
+        temp = data_lcl$TEMP[1]
+        pres = data_lcl$PRES[1]
 
+        lcl = enq_lcl(dwpt = dwpt, temp = temp, pres = pres)
+        lclp = lcl$lclp[1]
+        lclt = lcl$lclt[1]
+        lclrs= enq_rs(temp = lclt, pres = lclp, find = "rs")$rs[1]
+      }
+      if("lcl" %in% additional | "lclp" %in% additional){
+        plot_asnd = plot_asnd +
+          geom_hline(yintercept = lclp, linetype = "55")
+      }
+      if("lcl" %in% additional | "lcl_madt" %in% additional){
+        lcl_mabt = draw_line_mabt(temp = lclt, ini_pres = lclp)
+        plot_asnd = plot_asnd +
+          geom_path(data = lcl_mabt, aes(x = TEMP, y = PRES, group = group), color = "#619CFF", inherit.aes = F)
+      }
+      if("lcl" %in% additional | "lcl_dabt" %in% additional){
+        lcl_dabt = draw_line_dabt(temp = lclt, ini_pres = lclp)
+        plot_asnd = plot_asnd +
+          geom_path(data = lcl_dabt, aes(x = TEMP, y = PRES, group = group), color = "#E56B64", inherit.aes = F)
+      }
+      if("lcl" %in% additional | "lcl_ihum" %in% additional){
+        lcl_ihum = draw_line_ihum(rs = lclrs)
+        plot_asnd = plot_asnd +
+          geom_path(data = lcl_ihum, aes(x = TEMP, y = PRES, group = group), color = "#00BA38", inherit.aes = F)
+      }
       list_legend = append(list_legend, data_hour$Hour[i])
       list_plot   = append(list_plot, list(plot_asnd))
     }

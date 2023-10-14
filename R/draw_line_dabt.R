@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples draw_line_dabt()
-draw_line_dabt = function(temp = seq(-50, 50, 10), pres = c(5, 1500)){
+draw_line_dabt = function(temp = seq(-50, 50, 10), ini_pres = 1000, pres = c(5, 1500)){
   hkweather::hkw_lib()
   #Check moist
   flag_temp = !is.numeric(temp)
@@ -33,7 +33,7 @@ draw_line_dabt = function(temp = seq(-50, 50, 10), pres = c(5, 1500)){
 
   #Solution
   data1 = data.frame(temp1 = temp,
-                     pres1 = 1000)
+                     pres1 = ini_pres)
   data2 = data.frame(pres2 = seq(max(pres), min(pres), -5))
   data3 = expand_grid(data1, data2) %>%
     mutate(temp2 = enq_dabt(temp1, pres1, pres2, find = "temp")$temp2,

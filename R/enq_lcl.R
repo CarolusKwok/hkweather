@@ -14,6 +14,21 @@
 #' @examples enq_lcl(c(10,21), 20, 1000)
 enq_lcl = function(dwpt, temp, pres){
   hkweather::hkw_lib()
+  #test input
+  flag_dwpt = !is.numeric(dwpt)
+  flag_temp = !is.numeric(temp)
+  flag_pres = !is.numeric(pres)
+
+  flag_all = flag_dwpt | flag_temp | flag_pres
+
+  if(flag_all){
+    message("ERROR: Something is wrong with your input.")
+    if(flag_dwpt){message("ERROR: variable dwpt is incorrect. (Only accepts numbers)")}
+    if(flag_temp){message("ERROR: variable temp is incorrect. (Only accepts numbers")}
+    if(flag_pres){message("ERROR: variable pres is incorrect. (Only accepts numbers")}
+    return(message("---ENQUIRE ERROR---"))
+  }
+  #start calculation
 
   data = data.frame(dwpt = dwpt,
                     temp = temp,
@@ -25,7 +40,13 @@ enq_lcl = function(dwpt, temp, pres){
     mutate(rs = enq_rs(temp = dwpt, pres = pres, find = "rs")$rs)%>%
     mutate(es = enq_es(temp = dwpt, find = "es")$es)
 
+  data_est = enq_lcl_est(dwpt = data$dwpt, temp = data$temp, pres = data$pres)
+
+  data = data %>%
+    mutate(lclp_est = data_est$lclp)
+
   for(i in 1:nrow(data)){
+    message(paste0("Computing observation ", i))
     org_t = data$temp[i]
     org_d = data$dwpt[i]
     org_p = data$pres[i]
@@ -36,6 +57,8 @@ enq_lcl = function(dwpt, temp, pres){
     ana_d = data$dwpt[i]
 
     if(data$dwpt[i] > data$temp[i]){
+      ana_p = ana_p - 10
+
       while(ana_t < ana_d){
         ana_p = ana_p + 5
         ana_t = enq_dabt(temp1 = org_t, pres1 = org_p, pres2 = ana_p, find = "temp")$temp2
@@ -73,6 +96,8 @@ enq_lcl = function(dwpt, temp, pres){
       }
     }
     if(data$dwpt[i] < data$temp[i]){
+      ana_p = ana_p + 10
+
       while(ana_t > ana_d){
         ana_p = ana_p - 5
         ana_t = enq_dabt(temp1 = org_t, pres1 = org_p, pres2 = ana_p, find = "temp")$temp2
@@ -115,36 +140,5 @@ enq_lcl = function(dwpt, temp, pres){
     data$lclp[i] = ana_p
     data$lclt[i] = ana_a
   }
-  #Start calculating the solution
-  #Calculate dwpt isohume
-  #rs = (ep * es) / (pres - es)
-  #rs1 = (ep * es1) / (pres1 - es1)
-  #rs2 = (ep * es2) / (pres2 - es2)
-  #if rs1 = rs2
-  #(ep * es1) / (pres1 - es1) = (ep * es2) / (pres2 - es2)
-  #(ep * es1) / (pres1 - es1) / ep = es2 / (pres2 - es2)
-  #(ep * es1) / ((pres1 - es1) * ep) = es2 / pres2 - 1
-  #es1 / (pres1 - es1) = es2 / pres2 - 1
-  #es1 / pres1 = es2 / pres2
-  ####sub es into t
-  #es = e0 * exp((18.678 - (t/234.5)) * (t / (257.14 + t)))
-  #es1 = e0 * exp((18.678 - (t1/234.5)) * (t1 / (257.14 + t1)))
-  #es2 = e0 * exp((18.678 - (t2/234.5)) * (t2 / (257.14 + t2)))
-  #(e0 * exp((18.678 - (t1/234.5)) * (t1 / (257.14 + t1))) ) / pres1 =
-  #  (e0 * exp((18.678 - (t2/234.5)) * (t2 / (257.14 + t2))) ) / pres2
-  #let exp(...)1 be x1
-  #(e0 * x1) / pres1 = (e0 * x2) / pres2
-  #x1 / pres1 = x2 / pres2
-  #x1 / x2 = pres1 / pres2
-  #exp((18.678 - (t1/234.5)) * (t1 / (257.14 + t1))) / exp((18.678 - (t2/234.5)) * (t2 / (257.14 + t2))) =
-  #  pres1 / pres2
-  #exp(((18.678 - (t1/234.5)) * (t1 / (257.14 + t1))) - ((18.678 - (t2/234.5)) * (t2 / (257.14 + t2)))) =
-  #  pres1 / pres2
-  #((18.678 - (t1/234.5)) * (t1 / (257.14 + t1))) - ((18.678 - (t2/234.5)) * (t2 / (257.14 + t2))) =
-  #  ln(pres1 / pres2)
-
-
-  #Calculate temp dabt
-  #pres2 = 10 ^ (log10(temp2K/ temp1K) / RdCp + 3)
   return(data)
 }

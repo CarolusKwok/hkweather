@@ -10,7 +10,8 @@ draw_asnd_plot(
   MABT = T,
   IHUM = T,
   PRES = c(1000, 100),
-  TEMP = c(-100, 50)
+  TEMP = c(-100, 50),
+  additional = ""
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ draw_asnd_plot(
 \item{PRES}{Pressure range of the atmospheric sounding plot.}
 
 \item{TEMP}{Temperature range of the atmospheric sounding plot.}
+
+\item{additional}{Additional parameters to draw. Currently supports "lcl", "lclp", "lcl_mabt", "lcl_dabt", "lcl_ihum"}
 }
 \value{
 

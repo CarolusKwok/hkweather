@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples draw_hodo_plot(data)
-draw_hodo_plot = function(data, limit = c(0, 99999), type = "smooth", space = 500, df = 0.7, hght = seq(0, 99999, 1)){
+draw_hodo_plot = function(data, limit = c(0, 99999), equal = "both", type = "smooth", space = 500, df = 0.7, hght = seq(0, 99999, 1)){
   hkweather::hkw_lib()
   #Check the data
   flag_data = ifelse((is.data.frame(data) & "HGHT" %in% colnames(data) & "VWND" %in% colnames(data) & "UWND" %in% colnames(data)), F, T)
@@ -97,6 +97,35 @@ draw_hodo_plot = function(data, limit = c(0, 99999), type = "smooth", space = 50
              y = "V-Wind, smoothed", x = "U-Wind, smoothed", color = "Height")+
         theme_bw()
 
+      if(equal == "both"){
+        scale = max(abs(min(data_sel$VWND_smooth)),
+                    abs(max(data_sel$VWND_smooth)),
+                    abs(min(data_sel$UWND_smooth)),
+                    abs(max(data_sel$UWND_smooth)))
+        plot = plot +
+          coord_cartesian(xlim = c(-scale, +scale), ylim = c(-scale, +scale))
+      }
+      if(equal == "u"){
+        scale = max(abs(min(data_sel$UWND_smooth)),
+                    abs(max(data_sel$UWND_smooth)))
+        plot = plot +
+          coord_cartesian(xlim = c(-scale, +scale))
+      }
+      if(equal == "v"){
+        scale = max(abs(min(data_sel$VWND_smooth)),
+                    abs(max(data_sel$VWND_smooth)))
+        plot = plot +
+          coord_cartesian(ylim = c(-scale, +scale))
+      }
+      if(equal == "uv" | equal == "vu"){
+        scale_u = max(abs(min(data_sel$UWND_smooth)),
+                      abs(max(data_sel$UWND_smooth)))
+        scale_v = max(abs(min(data_sel$VWND_smooth)),
+                      abs(max(data_sel$VWND_smooth)))
+        plot = plot +
+          coord_cartesian(xlim = c(-scale_u, +scale_u), ylim = c(-scale_v, +scale_v))
+
+      }
       list_legend = append(list_legend, data_date$Hour[i])
       list_plot   = append(list_plot, list(plot))
     }
@@ -124,6 +153,35 @@ draw_hodo_plot = function(data, limit = c(0, 99999), type = "smooth", space = 50
              y = "V-Wind, raw", x = "U-Wind, raw", color = "Height")+
         theme_bw()
 
+      if(equal == "both"){
+        scale = max(abs(min(data_sel$VWND)),
+                    abs(max(data_sel$VWND)),
+                    abs(min(data_sel$UWND)),
+                    abs(max(data_sel$UWND)))
+        plot = plot +
+          coord_cartesian(xlim = c(-scale, +scale), ylim = c(-scale, +scale))
+      }
+      if(equal == "u"){
+        scale = max(abs(min(data_sel$UWND)),
+                    abs(max(data_sel$UWND)))
+        plot = plot +
+          coord_cartesian(xlim = c(-scale, +scale))
+      }
+      if(equal == "v"){
+        scale = max(abs(min(data_sel$VWND)),
+                    abs(max(data_sel$VWND)))
+        plot = plot +
+          coord_cartesian(ylim = c(-scale, +scale))
+      }
+      if(equal == "uv" | equal == "vu"){
+        scale_u = max(abs(min(data_sel$UWND)),
+                      abs(max(data_sel$UWND)))
+        scale_v = max(abs(min(data_sel$VWND)),
+                      abs(max(data_sel$VWND)))
+        plot = plot +
+          coord_cartesian(xlim = c(-scale_u, +scale_u), ylim = c(-scale_v, +scale_v))
+
+      }
       list_legend = append(list_legend, data_date$Hour[i])
       list_plot   = append(list_plot, list(plot))
     }

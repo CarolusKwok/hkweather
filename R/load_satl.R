@@ -3,6 +3,10 @@
 #' @param ETime The time of the lastest image. Only accepts POSIXct (tip: create POSIXct via ISOdatetime).
 #' @param DDays The duration of images to be downloaded in days. Only accepts numerical values.
 #' @param STime The time of the earliest image. Only accepts POSIXct (tip: create POSIXct via ISOdatetime).
+#'
+#'
+#'
+#'
 #' @param magn The satellite image magnification. Only accepts 2/ 4/ 8
 #' @param type The type of satellite image, which includes "True color" ("tc"), "Infrared" ("ir"), and "Deep convection" ("dc").
 #' @param listfail List the date/time of failed download attempts. Only accepts T/F/1/0.

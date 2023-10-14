@@ -4,7 +4,7 @@
 \alias{draw_line_dabt}
 \title{Loads dry adiabetic line}
 \usage{
-draw_line_dabt(temp = seq(-50, 50, 10), pres = c(5, 1500))
+draw_line_dabt(temp = seq(-50, 50, 10), ini_pres = 1000, pres = c(5, 1500))
 }
 \arguments{
 \item{temp}{Temperature of said gas at a pressure of 1000hPa.}

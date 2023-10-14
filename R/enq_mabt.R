@@ -10,7 +10,8 @@
 #'
 #' @examples enq_mabt(c(10, 20, 30), 1000, 500) should return -125.4218, -119.2539, -112.3171, as a list
 enq_mabt = function(temp1, pres1, pres2, acc = 0.1){
-  #Test input
+  hkweather::hkw_lib()
+  ##### Test input #####
   flag_temp1 = ifelse(is.numeric(temp1), F, T)
   flag_pres1 = ifelse(is.numeric(pres1), F, T)
   flag_pres2 = ifelse(is.numeric(pres2), F, T)
@@ -56,48 +57,56 @@ enq_mabt = function(temp1, pres1, pres2, acc = 0.1){
     return(message("---ENQUIRE ERROR---"))
   }
 
-  #Additional Variables
-  Rv = 461
-  T0 = 273.15
-  e0 = 0.6113
-  L  = 2.5*10^6
-  ep = 0.622
-  a  = 0.28571
-  b  = 13500000
-  c  = 2488.4
-  LRv= L/Rv
+  ##### Additional Variables #####
+  a = 0.28571
+  b = 1.35*10^7
+  c = 2488.4
 
-  #Start calculations
-  max_len = max(c(length(temp1), length(pres1), length(pres2)))
-  temp2_sel = c()
-  for(i in 1:max_len){
-    temp1_sel = temp1[i]
-    pres1_sel = pres1[i]
-    pres2_sel = pres2[i]
-
-    if(is.na(temp1_sel)){temp1_sel = temp1}
-    if(is.na(pres1_sel)){pres1_sel = pres1}
-    if(is.na(pres2_sel)){pres2_sel = pres2}
-
-    df = data.frame(PRES = seq(pres1_sel, pres2_sel, ifelse(pres1_sel < pres2_sel, acc, -acc)),
-                    TEMP = NA,
-                    TEMPK= NA,
-                    es   = NA,
-                    rs   = NA,
-                    TP   = NA)
-    df$TEMP[1] = temp1_sel
-    for(i in 1:nrow(df)){
-      df$TEMPK[i] = df$TEMP[i] + 273.15
-      df$es   [i] = e0 * exp(LRv *(1/T0 - 1/df$TEMPK[i]))
-      df$rs   [i] = (ep * df$es[i]) / (df$PRES[i] - df$es[i])
-      df$TP   [i] = (a * df$TEMPK[i] + c* df$rs[i])/
-        (df$PRES[i] * (1 + b * df$rs[i]/(df$TEMPK[i]^2)))
-      if(i != nrow(df)){
-        df$TEMP[i+1] = df$TEMP[i] + df$TP[i] * (df$PRES[i+1] - df$PRES[i])
-      }
-    }
-    temp2_sel = c(temp2_sel, df$TEMP[nrow(df)])
+  ##### Start calculations #####
+  enq_rs2 = function(temp, pres, find = "rs"){
+    df1 = data.frame(temp = temp,
+                     pres = pres/10) %>%
+      mutate(es = (0.6113 * exp(5423 * (1/273.15 - 1/(temp + 273.15))))) %>%
+      mutate(rs = (0.622 * es)/(pres - es)) %>%
+      mutate(es = es * 10,
+             rs = rs * 1000)
+    df1
   }
-  remove(df)
-  return(temp2_sel)
+
+  df = data.frame(temp1 = temp1,
+                  pres1 = pres1,
+                  temp2 = temp1,
+                  pres2 = pres2) %>%
+    mutate(rs_f = enq_rs2(temp = temp1, pres = pres1, find = "rs")$rs,
+           temp_k = temp2 + 273.15,
+           pres_k = pres1 / 10,
+           rs_k   = rs_f / 1000,
+           slope_i= (a*temp_k + c*rs_k)/(pres_k*(1 + (b * rs_k / temp_k^2)))) %>%
+    select(-rs_f, -temp_k, -pres_k, -rs_k) %>%
+    mutate(work = ifelse(pres1 != pres2, T, F))
+  for(i in 1:nrow(df)){
+    work = df$work[i]
+    presc= df$pres2[i]
+    tempc= df$temp2[i]
+    slope= df$slope_i[i]
+    while(work){
+      tempc = tempc + slope*(-acc)
+
+      if(pres1 > pres2){presc = presc - acc}
+      if(pres1 < pres2){presc = presc + acc}
+
+      rsc = enq_rs2(temp = tempc, pres = presc, find = "rs")$rs
+      rsk = rsc/1000
+      presk = presc/10
+      tempk = tempc + 273.15
+      slope = (a*tempk + c*rsk)/(presk*(1 + (b * rsk / tempk^2)))
+
+      work = ifelse(pres1 > pres2,
+                    ifelse(presc >= pres2, T, F),
+                    ifelse(presc <= pres2, T, F))
+      print(tempc)
+    }
+  }
+  return(df)
 }
+enq_mabt(30, 1000, 998, acc = 2)
